@@ -6,8 +6,10 @@ import {
   Text,
   View,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
+  Button
 } from 'react-native';
+import { Button as Button2, SocialIcon } from 'react-native-elements';
 import {applyMiddleware, createStore} from 'redux';
 import {createLogger} from 'redux-logger';
 import {Provider, connect} from 'react-redux';
@@ -36,12 +38,17 @@ export class App extends Component {
 
   render() {
     return (
-      <ScrollView style={{
-        flex: 1
-      }}>
-        <ActivityIndicator animating={this.props.fetching}/>
-        {this._renderScoreboards(this.props.matchups)}
-      </ScrollView>
+      <View style={{flex: 1}}>
+        <ScrollView style={{marginLeft: 10, marginRight: 10, marginBottom: 10}}>
+          <ActivityIndicator animating={this.props.fetching}/>
+          {this._renderScoreboards(this.props.matchups)}
+          <Button onPress={this.props.fetchMatchups} title="Learn More"/>
+        </ScrollView>
+        <View style={{bottom: 10, right: 0, position: 'absolute'}}>
+          <Button2 raised rounded transparent buttonStyle={{backgroundColor: 'black'}} containerViewStyle={{borderRadius: 100, width: 65}} textStyle={{textAlign: 'center', fontSize: 30, fontWeight: 'bold'}} title={'+'}/>
+        </View>
+        {/* <Button2 raised icon={{name: 'home'}} buttonStyle={{backgroundColor: 'black', borderRadius: 10, right: 0}} textStyle={{textAlign: 'center'}} title={'kldsajflkjasdf'}/> */}
+      </View>
     );
   }
 }

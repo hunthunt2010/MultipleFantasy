@@ -21,10 +21,10 @@ class ScoreBoardRow extends Component<{}> {
 class ScoreBoard extends Component {
   render() {
     return (
-      <View style={{height: 100, marginLeft: 10, marginRight: 10, marginTop: 10, backgroundColor: 'powderblue'}}>
+      <View style={{height: 100}}>
         <Text style={{flex: 1, backgroundColor: 'blue', paddingLeft: 10}}>{this.props.leagueName}</Text>
         <ScoreBoardRow teamName={this.props.awayTeam} score={this.props.awayScore}/>
-        <ScoreBoardRow teamName={this.props.homeTeam} score={this.props.awayScore}/>
+        <ScoreBoardRow teamName={this.props.homeTeam} score={this.props.homeScore}/>
       </View>
     )
   }

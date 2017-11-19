@@ -6,7 +6,8 @@ export const matchups = (state = {matchups: []}, action) => {
     case FETCHING_MATCHUPS:
       return Object.assign({}, state, {fetching: true});
     case FETCHING_MATCHUPS_SUCCESS:
-      return Object.assign({}, state, {fetching: false, matchups: action.matchups});
+      let matchups = []
+      return Object.assign({}, state, {fetching: false, matchups: matchups.concat(state.matchups).concat(action.matchups)});
     default:
       return state;
   }
