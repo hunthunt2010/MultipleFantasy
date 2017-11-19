@@ -5,42 +5,57 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView
+  ScrollView,
+  ActivityIndicator
 } from 'react-native';
 import {applyMiddleware, createStore} from 'redux';
 import {createLogger} from 'redux-logger';
 import {Provider, connect} from 'react-redux';
 import reducer from './reducers'
+import thunk from 'redux-thunk'
+import {fetchMatchups} from './actions/Matchups';
 
-const middleware = [createLogger()];
+const middleware = [thunk, createLogger()];
 
 const store = createStore(
   reducer,
   applyMiddleware(...middleware)
 );
 
-function _renderScoreboards(matchups) {
-  return matchups.map((_, i) => {
-    return <ScoreBoard key={i} leagueName="Test" homeTeam="Home Team" awayTeam="Away Team" homeScore="100" awayScore="12"/>
-  });
-}
+export class App extends Component {
 
-const App = (props) => {
-  return (
-    <Provider store={store}>
+  componentDidMount() {
+    this.props.fetchMatchups();
+  }
+
+  _renderScoreboards(matchups) {
+    return matchups.map((m, i) => {
+      return <ScoreBoard key={i} leagueName={m.leagueName} homeTeam={m.homeTeam} awayTeam={m.awayTeam} homeScore={m.homeScore} awayScore={m.awayScore}/>
+    });
+  }
+
+  render() {
+    return (
       <ScrollView style={{
         flex: 1
       }}>
-        {_renderScoreboards(props.matchups)}
+        <ActivityIndicator animating={this.props.fetching}/>
+        {this._renderScoreboards(this.props.matchups)}
       </ScrollView>
-    </Provider>
-  );
-}
-
-function mapStateToProps (state) {
-  return {
-    matchups: state.matchups
+    );
   }
 }
 
-export default connect(mapStateToProps)(App)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchMatchups: () => {
+      dispatch(fetchMatchups());
+    }
+  };
+};
+
+const mapStateToProps = state => {
+  return state.matchups
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
